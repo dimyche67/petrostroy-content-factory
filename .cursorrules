@@ -1,0 +1,27 @@
+# Петрострой Контент-Завод — правила проекта
+
+## Стек
+- Python 3.11+, aiogram 3.x, SQLAlchemy 2.x async + SQLite
+- OpenAI Whisper (транскрипция), Anthropic Claude (генерация)
+- pydantic-settings для конфига, loguru для логов
+
+## Принципы
+- Бот НИКОГДА не публикует сам — только генерирует черновики
+- Все секреты только в .env, не коммитить
+- Рубрики и тренды — данные в БД, не хардкод в коде
+- Каждый вызов ИИ логируется в generation_log
+- Авторизация по telegram_id через middleware на каждом handler
+
+## Машина состояний поста
+draft → pending_approval → approved → published
+draft/approved → published (без согласования если REQUIRE_OWNER_APPROVAL=false)
+
+## При добавлении фич
+- Следовать структуре из ТЗ v2.0
+- VK-интеграция — только Фаза 2, с деградацией в ручной режим
+- Новые рубрики — через seed/migration, не в коде handlers
+
+## Стиль кода
+- Async everywhere
+- Минимальный diff, без over-engineering
+- Комментарии только для неочевидной бизнес-логики
